@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CartCtx } from "../../store/CartContext";
 import { CartIcon } from "../Cart/CartIcon";
 import styled from "styled-components";
 
@@ -26,9 +27,8 @@ const CartButton = styled.button`
   &:active {
     background-color: #2c0d00;
   }
-  &:hover ${Badge},
-  &:active ${Badge} {
-    background-color: #92320c;;
+  &:hover ${Badge}, &:active ${Badge} {
+    background-color: #92320c;
   }
 `;
 
@@ -38,14 +38,20 @@ const IconWrapper = styled.span`
   margin-right: 0.5rem;
 `;
 
-export const HeaderCardButton = () => {
+export const HeaderCardButton = ({
+  showCartModal,
+}: {
+  showCartModal: () => void;
+}) => {
+
+  const CartContext = useContext(CartCtx)
   return (
-    <CartButton>
+    <CartButton onClick={showCartModal}>
       <IconWrapper>
         <CartIcon />
       </IconWrapper>
       <span>Your cart</span>
-      <Badge>3</Badge>
+      <Badge>{CartContext?.items.length}</Badge>
     </CartButton>
   );
 };

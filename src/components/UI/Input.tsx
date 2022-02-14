@@ -23,13 +23,13 @@ type InputProps = {
     input: React.InputHTMLAttributes<HTMLInputElement>,
 }
 
-const Input = ({ label, input }: InputProps) => {
+const Input = React.forwardRef(({ label, input }: InputProps, ref: React.Ref<HTMLInputElement>) => {
   return (
     <InputWrapper>
       <label htmlFor=""></label>
-      <input {...input}/>
+      <input ref={ref} {...input}/>
     </InputWrapper>
   );
-};
+});
 
 export default Input;

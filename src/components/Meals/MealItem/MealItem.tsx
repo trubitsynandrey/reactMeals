@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { MealItemForm } from "./MealItemForm"
+import { MealItemForm } from "./MealItemForm";
+import { CartCtx } from "../../../store/CartContext"
 
 type MealtItemProps = {
   name: string;
@@ -21,22 +22,31 @@ const Meal = styled.div`
 `;
 
 const Price = styled.div`
-    margin-top: 0.25rem;
+  margin-top: 0.25rem;
   font-weight: bold;
   color: #ad5502;
   font-size: 1.25rem;
-`
+`;
 export const MealItem = ({ name, description, price, id }: MealtItemProps) => {
+  const CartContext = useContext(CartCtx)
+  const onAddToCartHandler = (amount: number) => {
+    CartContext?.addItem({
+      id: id,
+      name: name,
+      amount: amount,
+      price: price,
+    })
+  };
   const priceBill = `$${price.toFixed(2)}`;
   return (
     <Meal>
       <div>
         <h3>{name}</h3>
-        <div style={{fontStyle: "italic"}}>{description}</div>
+        <div style={{ fontStyle: "italic" }}>{description}</div>
         <Price>{priceBill}</Price>
       </div>
       <div>
-        <MealItemForm id={id}/>
+        <MealItemForm addToCart={onAddToCartHandler} id={id} />
       </div>
     </Meal>
   );

@@ -32,12 +32,16 @@ const ImageWrapper = styled.div`
   }
 `;
 
-export const Header = () => {
+export const Header = ({
+  showCartModal,
+}: {
+  showCartModal: () => void;
+}) => {
   return (
     <>
       <HeaderBlock>
         <h1>React meals</h1>
-        <HeaderCardButton />
+        <HeaderCardButton showCartModal={showCartModal}/>
       </HeaderBlock>
       <ImageWrapper>
         <img src={mealsImg} alt="plate of delicious food" />

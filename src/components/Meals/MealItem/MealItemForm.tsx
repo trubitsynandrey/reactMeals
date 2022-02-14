@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Input from "../../UI/Input";
 
@@ -21,10 +21,34 @@ const Form = styled.form`
   }
 `;
 
-export const MealItemForm = ({ id } : {id: string}) => {
+type MealItemFormProps = {
+  id: string,
+  addToCart: (amount: number) => void,
+}
+
+export const MealItemForm = ({ id, addToCart }: MealItemFormProps) => {
+  const [isAmountValid, setIsAmountValid] = useState(true);
+  const amountInputRef = useRef<HTMLInputElement>(null);
+
+  const submitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    const enteredAmount = amountInputRef.current?.value;
+    const numberEnteredAmount = +enteredAmount!;
+    if (
+      enteredAmount?.trim().length === 0 ||
+      numberEnteredAmount > 5 ||
+      numberEnteredAmount < 1
+    ) {
+      setIsAmountValid(false)
+      return;
+    }
+    addToCart(numberEnteredAmount)
+  };
+
   return (
-    <Form>
+    <Form onSubmit={submitHandler}>
       <Input
+        ref={amountInputRef}
         label="Amount"
         input={{
           id: "amount_" + id,
@@ -36,6 +60,7 @@ export const MealItemForm = ({ id } : {id: string}) => {
         }}
       />
       <button>+ Add</button>
+      {!isAmountValid && <p>Please enter a valid amount</p>}
     </Form>
   );
 };
