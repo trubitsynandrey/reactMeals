@@ -11,7 +11,7 @@ const Badge = styled.span`
   font-weight: bold;
 `;
 
-const CartButton = styled.button<{ bumped: boolean }>`
+const CartButton = styled.button`
   cursor: pointer;
   font: inherit;
   border: none;
@@ -30,7 +30,9 @@ const CartButton = styled.button<{ bumped: boolean }>`
   &:hover ${Badge}, &:active ${Badge} {
     background-color: #92320c;
   }
-  animation: ${({bumped}) => (bumped ? `bump 300ms ease-out` : "")};
+  &[data-bumped=true] {
+    animation: bump 300ms ease-out;
+  }
   @keyframes bump {
     0% {
       transform: scale(1);
@@ -82,7 +84,7 @@ export const HeaderCardButton = ({
     };
   }, [items]);
   return (
-    <CartButton onClick={showCartModal} bumped={buttonIsHighlighted}>
+    <CartButton onClick={showCartModal} data-bumped={buttonIsHighlighted}>
       <IconWrapper>
         <CartIcon />
       </IconWrapper>
