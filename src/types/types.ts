@@ -1,21 +1,21 @@
 export type AddAction = {
     type: "ADD",
-    item: MealtItem,
+    item: MealItem,
 }
 
 export type RemoveAction = {
     type: "REMOVE",
-    id: number;
+    id: string;
 }
 
 export type InitialState = {
-    items: MealtItem[],
+    items: MealItem[],
     totalAmount: number,
 }
 
 export type ReducerActions = RemoveAction | AddAction
 
-export type MealtItem = {
+export type MealItem = {
     name: string;
     amount: number,
     price: number;

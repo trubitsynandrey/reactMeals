@@ -43,15 +43,19 @@ export const HeaderCardButton = ({
 }: {
   showCartModal: () => void;
 }) => {
+  const CartContext = useContext(CartCtx);
 
-  const CartContext = useContext(CartCtx)
+  const numberOfCartItems = CartContext?.items.reduce(
+    (curNumber, item) => curNumber + item.amount,
+    0
+  );
   return (
     <CartButton onClick={showCartModal}>
       <IconWrapper>
         <CartIcon />
       </IconWrapper>
       <span>Your cart</span>
-      <Badge>{CartContext?.items.length}</Badge>
+      <Badge>{numberOfCartItems}</Badge>
     </CartButton>
   );
 };

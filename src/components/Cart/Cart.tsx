@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Modal } from "../UI/Modal";
+import { CartCtx } from "../../store/CartContext";
+import { CartItem } from "./CartItem";
+import { MealItem } from "../../types/types";
 
 const ItemsList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
   max-height: 20rem;
-  overflow: auto;
+  overflow: scroll;
 `;
 
 const TotalWrapper = styled.div`
@@ -51,10 +54,28 @@ type CartProps = {
 };
 
 export const Cart = ({ hideCartModal }: CartProps) => {
+  const CartContext = useContext(CartCtx);
+  const totalAmount = `$${CartContext?.totalAmount.toFixed(2)}`;
+  const hasItems = CartContext && CartContext?.items.length > 0;
+  const addCartItem = (item: MealItem) => {
+    CartContext?.addItem({ ...item, amount: 1})
+  }
+  const removeCartItem = (id: string) => {
+    CartContext?.removeItem(id);
+  }
   const cartItems = (
     <ItemsList>
-      {[{ id: "c1", name: "sushi", amount: 2, price: 12.99 }].map((item) => (
-        <li>{item.name}</li>
+      {CartContext?.items.map((item: MealItem) => (
+        <CartItem
+          key={item.id}
+          item={item}
+          price={item.price}
+          name={item.name}
+          amount={item.amount}
+          onRemove={removeCartItem}
+          onAdd={addCartItem}
+          id={item.id}
+        />
       ))}
     </ItemsList>
   );
@@ -64,11 +85,11 @@ export const Cart = ({ hideCartModal }: CartProps) => {
         {cartItems}
         <TotalWrapper>
           <span>Total amount</span>
-          <span>12,45</span>
+          <span>{totalAmount}</span>
         </TotalWrapper>
         <ActionsWrapper>
           <ButtonAlt onClick={hideCartModal}>Close</ButtonAlt>
-          <Button>Order</Button>
+          {hasItems && <Button>Order</Button>}
         </ActionsWrapper>
       </>
     </Modal>
