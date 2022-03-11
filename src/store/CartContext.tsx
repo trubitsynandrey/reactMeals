@@ -6,6 +6,7 @@ interface CartContext {
   totalAmount: number;
   addItem: (item: MealItem) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
 }
 
 export const CartCtx = createContext<CartContext | null>(null);
@@ -49,6 +50,10 @@ const cartReducer = (state: InitialState, action: ReducerActions) => {
     }
     return { items: updatedItems, totalAmount: updatedTotalAmount}
   }
+
+  if (action.type = "CLEAR")  {
+    return defaultCartState;
+  }
   return defaultCartState;
 };
 
@@ -64,11 +69,17 @@ export const CartProvider = ({ children }: { children: JSX.Element }) => {
   const removeItemFromCart = (id: string) => {
     dispatchCartAction({ type: "REMOVE", id: id });
   };
+
+  const clearCartHandler = () => {
+    dispatchCartAction({ type: "CLEAR" });
+  }
+  
   const cartContext: CartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCart,
     removeItem: removeItemFromCart,
+    clearCart: clearCartHandler,
   };
   return <CartCtx.Provider value={cartContext}>{children}</CartCtx.Provider>;
 };

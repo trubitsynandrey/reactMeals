@@ -7,9 +7,11 @@ import { CartProvider } from "./store/CartContext";
 function App() {
   const [isModal, setIsModal] = useState(false);
   const showCartModal = () => {
+    document.body.style.overflow = "hidden"
     setIsModal(true);
   };
   const hideCartModal = () => {
+    document.body.style.overflow = "visible"
     setIsModal(false);
   };
   return (

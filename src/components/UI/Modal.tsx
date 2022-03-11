@@ -14,7 +14,7 @@ const BackDropWindow = styled.div`
 
 const ModalBlock = styled.div`
   position: fixed;
-  top: 20vh;
+  top: 15vh;
   left: 5%;
   width: 90%;
   background-color: white;
@@ -39,8 +39,8 @@ const ModalBlock = styled.div`
   }
 `;
 
-const BackDrop = () => {
-  return <BackDropWindow></BackDropWindow>;
+const BackDrop = ({onClose} : { onClose: () => void}) => {
+  return <BackDropWindow onClick={onClose}></BackDropWindow>;
 };
 
 const ModalOverlay = ({
@@ -56,10 +56,10 @@ const ModalOverlay = ({
 };
 
 const portalContainer = document.getElementById('overlays')
-export const Modal = ({ children }: { children: JSX.Element }) => {
+export const Modal = ({ children, onClose }: { children: JSX.Element, onClose: () => void}) => {
   return (
     <>
-      {ReactDOM.createPortal(<BackDrop />, portalContainer!)}
+      {ReactDOM.createPortal(<BackDrop onClose={onClose}/>, portalContainer!)}
       {ReactDOM.createPortal(<ModalOverlay children={children} />, portalContainer!)}
     </>
   );
